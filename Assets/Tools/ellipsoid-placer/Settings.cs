@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ItemPlacer
+namespace EllipsePlacer
 {
     public static class Settings
     {

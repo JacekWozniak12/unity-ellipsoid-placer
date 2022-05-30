@@ -1,17 +1,17 @@
-namespace ItemPlacer.Editor
+namespace EllipsePlacer.Editor
 {
     using UnityEngine;
     using UnityEditor;
 
-    public partial class Creator : EditorWindow
+    public partial class CreatorView : EditorWindow
     {
         [MenuItem(Settings.WINDOW_MENU_NAME)]
         static void Init()
         {
-            Creator window = EditorWindow.GetWindow(
-                typeof(Creator),
+            CreatorView window = EditorWindow.GetWindow(
+                typeof(CreatorView),
                 true,
-                Settings.NAME) as Creator;
+                Settings.NAME) as CreatorView;
 
             window.minSize = Settings.WINDOW_SIZE;
             window.Show();

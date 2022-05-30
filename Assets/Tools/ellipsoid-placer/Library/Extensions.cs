@@ -1,4 +1,4 @@
-namespace ItemPlacer
+namespace EllipsePlacer
 {
     using UnityEngine;
 

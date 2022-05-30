@@ -1,9 +1,9 @@
-namespace ItemPlacer.Editor
+namespace EllipsePlacer.Editor
 {
     using UnityEngine;
     using UnityEditor;
 
-    public partial class Creator : EditorWindow
+    public partial class CreatorView : EditorWindow
     {
         [SerializeField] internal CreatorSettingsSO currentSettings = default;
         internal SerializedObject serialized_object;

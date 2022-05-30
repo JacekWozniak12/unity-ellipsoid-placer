@@ -1,10 +1,4 @@
-namespace ItemPlacer
+namespace EllipsePlacer
 {
-    public enum CreationMethod
-    {
-        AngleConst,
-        DistanceConstNaive,
-        ItemBasedNaive
-    }
-
+    public enum CreationMethod { AngleConst, DistanceConstNaive, ItemBasedNaive }
 }

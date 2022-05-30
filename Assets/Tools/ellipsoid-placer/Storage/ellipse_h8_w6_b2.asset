@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ellipse_h8_w6_b2
   m_EditorClassIdentifier: 
   StartingPosition: {x: 0, y: 0, z: 0}
-  Method: 5
+  Method: 0
   Prefab: {fileID: 2789043147489266285, guid: fe565201de4463542b12c1ed19bb1c89, type: 3}
   Material: {fileID: 0}
   Color: {r: 1, g: 1, b: 1, a: 1}

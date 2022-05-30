@@ -1,9 +1,9 @@
-namespace ItemPlacer.Editor
+namespace EllipsePlacer.Editor
 {
     using UnityEngine;
     using UnityEditor;
 
-    public partial class Creator : EditorWindow
+    public partial class CreatorView : EditorWindow
     {
         internal void PlaceInXZ(GameObject obj, GameObject parent, CreatorSettingsSO settings)
         {

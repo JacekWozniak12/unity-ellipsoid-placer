@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-namespace ItemPlacer
+namespace EllipsePlacer
 {
     public static class EllipseHandler
     {
@@ -21,11 +21,8 @@ namespace ItemPlacer
             GameObject i1 = GameObject.Instantiate(item, center, Quaternion.identity);
             Vector3 itemBoundsSize = item.GetComponent<Collider>().bounds.size + Vector3.one * between / 2;
             float itemDistance = itemBoundsSize.x + between;
+            float x0 = width, y0 = 0, x1 = 0, y1 = 0;
             float angle = 0;
-            float x0 = width;
-            float y0 = 0;
-            float x1 = 0;
-            float y1 = 0;
 
             while (angle < 360)
             {

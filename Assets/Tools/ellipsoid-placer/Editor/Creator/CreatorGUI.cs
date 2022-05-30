@@ -1,10 +1,19 @@
-namespace ItemPlacer.Editor
-{
-    using UnityEngine;
-    using UnityEditor;
+using UnityEngine;
+using UnityEditor;
 
-    public partial class Creator : EditorWindow
+namespace EllipsePlacer.Editor
+{
+    public partial class CreatorView : EditorWindow
     {
+        internal void OnGUI()
+        {
+            serialized_object.Update();
+            DisplayImportExport();
+            DisplayProperties();
+            DisplayCreate();
+            serialized_object.ApplyModifiedProperties();
+        }
+
         internal void DisplayImportExport()
         {
             if (GUILayout.Button("Import changes from file")) ImportProcedure();
@@ -31,15 +40,6 @@ namespace ItemPlacer.Editor
             EditorGUILayout.PropertyField(prop_Precision);
         }
 
-        internal void OnGUI()
-        {
-            serialized_object.Update();
-            DisplayImportExport();
-            DisplayProperties();
-            DisplayCreate();
-            serialized_object.ApplyModifiedProperties();
-        }
-
         internal void DropAreaGUI()
         {
             Event evt = Event.current;
@@ -59,7 +59,7 @@ namespace ItemPlacer.Editor
                     {
                         DragAndDrop.AcceptDrag();
                         var dragged = DragAndDrop.objectReferences[0];
-                        if(dragged is CreatorSettingsSO settingsSO)
+                        if (dragged is CreatorSettingsSO settingsSO)
                         {
                             SetSerializedObject(settingsSO);
                         }

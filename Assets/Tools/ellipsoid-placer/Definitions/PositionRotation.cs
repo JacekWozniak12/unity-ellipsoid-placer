@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
-namespace ItemPlacer
+
+namespace EllipsePlacer
 {
     [Serializable]
     public struct PositionRotation

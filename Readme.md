@@ -5,13 +5,6 @@
 - Stores settings in scriptable object.
 - Customize your prefab looks used to generate with custom material and color (applied only to first material slot).
 
-## Versions
-- 2022-05-30a
-  - After minor changes and code cleanups.
-  - 3 placement modes
-  - Basic prefab usage
-  - Basic renderer adjustment available from editor
-
 ## Documentation and tutorials used
 - Documentation from Unity.
 - [Freya Holmer's lecture about tools](https://www.youtube.com/watch?v=pZ45O2hg_30)
@@ -23,3 +16,11 @@ https://jacekwozniak12.github.io/
 
 ## Thanks
 https://twitter.com/PolandballD 
+
+## Versions
+- 2022-05-30a
+  - After minor changes and code cleanups.
+  - 3 placement modes
+  - Basic prefab usage
+  - Basic renderer adjustment available from editor
+

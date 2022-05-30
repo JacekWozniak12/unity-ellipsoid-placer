@@ -1,9 +1,9 @@
-namespace ItemPlacer.Editor
+namespace EllipsePlacer.Editor
 {
     using UnityEngine;
     using UnityEditor;
 
-    public partial class Creator : EditorWindow
+    public partial class CreatorView : EditorWindow
     {
         internal void UpdatePrefabVisuals(GameObject temp, CreatorSettingsSO settings)
         {
