@@ -4,10 +4,7 @@ namespace ItemPlacer
     {
         AngleConst,
         DistanceConstNaive,
-        ItemBasedNaive,
-        SymmetricalOnWidth,
-        DistanceConst,
-        ItemDistanceConst
+        ItemBasedNaive
     }
 
 }

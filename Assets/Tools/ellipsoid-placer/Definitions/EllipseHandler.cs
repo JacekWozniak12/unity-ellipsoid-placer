@@ -8,7 +8,13 @@ namespace ItemPlacer
         public const int HALF_ANGLE = 180;
         public const int HOW_PRECISE = 1;
 
-        public static PositionRotation[] CalculatePositionRotationFromItem(Vector3 center, float width, float height, GameObject item, float between, int precision = HOW_PRECISE)
+        public static PositionRotation[] CalculatePositionRotationFromItem(
+            Vector3 center,
+            float width,
+            float height,
+            GameObject item,
+            float between,
+            int precision = HOW_PRECISE)
         {
             List<PositionRotation> points = new List<PositionRotation>();
 
@@ -21,7 +27,7 @@ namespace ItemPlacer
             float x1 = 0;
             float y1 = 0;
 
-            for (; angle < 360;)
+            while (angle < 360)
             {
                 float distance = 0;
                 while (distance < MathL.GetLengthOfCubeFromAngle(itemDistance, angle))
@@ -44,7 +50,12 @@ namespace ItemPlacer
             return points.ToArray();
         }
 
-        public static PositionRotation[] CalculatePositionsAngleFromItemLength(Vector3 center, float width, float height, float itemDistance, int precision = HOW_PRECISE)
+        public static PositionRotation[] CalculatePositionsAngleFromItemLength(
+            Vector3 center,
+            float width,
+            float height,
+            float itemDistance,
+            int precision = HOW_PRECISE)
         {
             List<PositionRotation> points = new List<PositionRotation>();
 
@@ -77,13 +88,19 @@ namespace ItemPlacer
             return points.ToArray();
         }
 
-        public static PositionRotation[] CalcuatePositionsBasedOnSymmetryWidth(Vector3 center, float width, float height, GameObject item, float itemDistance, int precision = HOW_PRECISE)
+        public static PositionRotation[] CalcuatePositionsBasedOnSymmetryWidth(
+            Vector3 center,
+            float width,
+            float height,
+            GameObject item,
+            float itemDistance,
+            int precision = HOW_PRECISE)
         {
             float itemLength = item.GetComponent<Collider>().bounds.size.x + itemDistance / 2;
             Vector3 itemBoundsSize = item.GetComponent<Collider>().bounds.size + Vector3.one * itemDistance / 2;
             GameObject i1 = GameObject.Instantiate(item, center, Quaternion.identity);
 
-            int size = (int)(CalculateLength(width, height) / itemLength);
+            int size = (int)(CalculateRamanujanFirstApproxOfLength(width, height) / itemLength);
             List<PositionRotation> points = new List<PositionRotation>();
 
             for (int i = 0; i <= HALF_ANGLE * HOW_PRECISE - 2; i++)
@@ -111,7 +128,13 @@ namespace ItemPlacer
 
         // issue rotation to fix as bounds dont take it to the calc.
         // also some optimization would be suggested 
-        public static PositionRotation[] CalcuatePositionsAngleFromItem(Vector3 center, float width, float height, GameObject item, float itemDistance, int precision = HOW_PRECISE)
+        public static PositionRotation[] CalcuatePositionsAngleFromItem(
+            Vector3 center,
+            float width,
+            float height,
+            GameObject item,
+            float itemDistance,
+            int precision = HOW_PRECISE)
         {
             List<PositionRotation> points = new List<PositionRotation>();
             Vector3 temp = Vector3.forward * height + center;
@@ -132,7 +155,11 @@ namespace ItemPlacer
         }
 
         private static void AddPositionToListIfNotOverlapping(
-            List<PositionRotation> points, GameObject i1, Vector3 pos, Quaternion rot, Vector3 itemBoundsSize)
+            List<PositionRotation> points,
+            GameObject i1,
+            Vector3 pos,
+            Quaternion rot,
+            Vector3 itemBoundsSize)
         {
             var a = Physics.OverlapBox(pos, itemBoundsSize, rot);
             if (a.Length == 0)
@@ -146,9 +173,13 @@ namespace ItemPlacer
 
         // inspired by: https://math.stackexchange.com/questions/433094/how-to-determine-the-arc-length-of-ellipse
         // and: https://stackoverflow.com/questions/40785545/is-there-a-shortcut-to-retrieve-the-angle-of-an-arc-of-an-ellipse-just-using-it
-        public static PositionRotation[] CalculatePositionsAngleFromItemLengthNaive(Vector3 center, float width, float height, float itemLength)
+        public static PositionRotation[] CalculatePositionsAngleFromItemLengthNaive(
+            Vector3 center,
+            float width,
+            float height,
+            float itemLength)
         {
-            int size = (int)(CalculateLength(width, height) / itemLength);
+            int size = (int)(CalculateRamanujanFirstApproxOfLength(width, height) / itemLength);
             List<PositionRotation> points = new List<PositionRotation>();
             Vector3 temp = Vector3.zero;
 
@@ -172,9 +203,12 @@ namespace ItemPlacer
         }
 
         // inspired by: https://www.youtube.com/watch?v=mQKGRoV_jBc
-        public static PositionRotation[] CalculatePositionsAngleConstMethod(Vector3 center, float width, float height, float itemLength)
+        public static PositionRotation[] CalculatePositionsAngleConstMethod(Vector3 center,
+            float width,
+            float height,
+            float itemLength)
         {
-            int size = (int)(CalculateLength(width, height) / itemLength);
+            int size = (int)(CalculateRamanujanFirstApproxOfLength(width, height) / itemLength);
             PositionRotation[] points = new PositionRotation[size];
             for (int i = 0; i < points.Length; i++)
             {
@@ -203,7 +237,7 @@ namespace ItemPlacer
         /// Ramanujan first approximation of Ellipse Length. 
         /// </summary>
         /// <returns>PI{  3(a + b) - SQRT[ (3a + b) * (a + 3b) ]  }</returns>
-        public static float CalculateLength(float a, float b)
+        public static float CalculateRamanujanFirstApproxOfLength(float a, float b)
         {
             // Ramanujan first approximation
             // Can be optimised (sqrt into part * part as multiplication is faster) 

@@ -1,8 +1,16 @@
 # Ellipsoid Placer
 ## Features
+- Unity Editor Tool
 - Creates ellipse using multiple methods, like based on constant angle change (prefered for circles), item length or gameobject (position, rotation and size) based. 
 - Stores settings in scriptable object.
-- Customize your prefab looks used to generate with custom material and color (applied only to first material).
+- Customize your prefab looks used to generate with custom material and color (applied only to first material slot).
+
+## Versions
+- 2022-05-30a
+  - After minor changes and code cleanups.
+  - 3 placement modes
+  - Basic prefab usage
+  - Basic renderer adjustment available from editor
 
 ## Documentation and tutorials used
 - Documentation from Unity.

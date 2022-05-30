@@ -29,21 +29,6 @@ namespace ItemPlacer.Editor
                          settings.StartingPosition, settings.Width, settings.Height,
                          obj, settings.Between, settings.Precision);
                     break;
-                case CreationMethod.SymmetricalOnWidth:
-                    places = EllipseHandler.CalcuatePositionsBasedOnSymmetryWidth(
-                         settings.StartingPosition, settings.Width, settings.Height,
-                         obj, settings.Between, settings.Precision);
-                    break;
-                case CreationMethod.DistanceConst:
-                    places = EllipseHandler.CalculatePositionsAngleFromItemLength(
-                        settings.StartingPosition, settings.Width, settings.Height,
-                        x_size + settings.Between, settings.Precision);
-                    break;
-                case CreationMethod.ItemDistanceConst:
-                    places = EllipseHandler.CalculatePositionRotationFromItem(
-                        settings.StartingPosition, settings.Width, settings.Height,
-                        obj, settings.Between, settings.Precision);
-                    break;
             }
 
             foreach (PositionRotation p in places)
