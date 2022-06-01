@@ -1,11 +1,10 @@
+using UnityEngine;
+
 namespace EllipsePlacer.Editor
 {
-    using UnityEngine;
-    using UnityEditor;
-
-    public partial class CreatorView : EditorWindow
+    public class CreatorPlacer
     {
-        internal void PlaceInXZ(GameObject obj, GameObject parent, CreatorSettingsSO settings)
+        public void PlaceOnScene(GameObject obj, GameObject parent, CreatorSettingsSO settings)
         {
             Collider collider = obj.GetComponent<Collider>();
 
@@ -33,7 +32,7 @@ namespace EllipsePlacer.Editor
 
             foreach (PositionRotation p in places)
             {
-                GameObject copy = Instantiate(obj, p.position, p.rotation);
+                GameObject copy = GameObject.Instantiate(obj, p.position, p.rotation);
                 copy.name = "Item";
                 copy.transform.parent = parent.transform;
             }

@@ -1,10 +1,20 @@
+using UnityEngine;
+using UnityEditor;
+using System.Collections.Generic;
+
 namespace EllipsePlacer.Editor
 {
-    using UnityEngine;
-    using UnityEditor;
-
-    public partial class CreatorView : EditorWindow
+    public class CreatorView : EditorWindow
     {
+        CreatorIO _creatorIO = new CreatorIO();
+        List<IDisplayGUI> _viewElements = new List<IDisplayGUI>();
+
+        [SerializeField]
+        CreatorSettingsSO _currentSettings = default;
+        CreatorPropertyHandler _propertyHandler;
+        CreatorPlacer _placer;
+
+
         [MenuItem(Settings.WINDOW_MENU_NAME)]
         static void Init()
         {
@@ -13,43 +23,62 @@ namespace EllipsePlacer.Editor
                 true,
                 Settings.NAME) as CreatorView;
 
+            CreatorDropView dropView = new CreatorDropView();
+            window._placer = new CreatorPlacer();
+            window._currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
+            window._propertyHandler = new CreatorPropertyHandler(window._currentSettings);
+            dropView.EventHappened.AddListener(window._propertyHandler.SetCreatorSettings);
+
+            window._viewElements.AddRange(
+                new IDisplayGUI[]{
+                    window._propertyHandler,
+                    dropView}
+               );
+
             window.minSize = Settings.WINDOW_SIZE;
             window.Show();
         }
 
-        private void OnEnable()
+        internal void OnGUI()
         {
-            if (currentSettings == null)
-                currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
+            DisplayImportExport();
 
-            SetSerializedObject(currentSettings);
+            foreach (IDisplayGUI displayer in _viewElements)
+                displayer.OnDisplayGUI();
+
+            DisplayCreate();
         }
 
-        internal void SetSerializedObject(CreatorSettingsSO applied)
+        internal void DisplayImportExport()
         {
-            currentSettings = applied;
-            serialized_object = new SerializedObject(currentSettings);
-            GetProperties(serialized_object);
+            if (GUILayout.Button("Import changes from file")) ImportProcedure();
+            if (GUILayout.Button("Export changes to new file")) ExportProcedure();
+        }
+
+        internal void DisplayCreate()
+        {
+            if (GUILayout.Button("Generate")) Place(_propertyHandler.GetSerializedObject().targetObject as CreatorSettingsSO);
         }
 
         internal void ImportProcedure()
         {
-            CreatorSettingsSO temp = Import();
+            CreatorSettingsSO temp = _creatorIO.ImportWithOpenFilePanel();
             if (temp != null)
             {
-                currentSettings = Instantiate(temp);
-                SetSerializedObject(currentSettings);
+                _currentSettings = Instantiate(temp);
+                _propertyHandler.SetCreatorSettings(_currentSettings);
             }
         }
 
         internal void ExportProcedure()
         {
-            if (Export())
+            _currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
+            
+            _propertyHandler.ApplyPropertiesFromWindowTo(_currentSettings);
+            if(_creatorIO.ExportToFile(_currentSettings))
             {
-                currentSettings = Instantiate(currentSettings);
-                SetSerializedObject(currentSettings);
+                _propertyHandler.SetCreatorSettings(_currentSettings);
             }
-
         }
 
         internal void Place(CreatorSettingsSO settings)
@@ -65,8 +94,35 @@ namespace EllipsePlacer.Editor
 
             UpdatePrefabVisuals(temp, settings);
             UpdatePrefabScale(temp, settings);
-            PlaceInXZ(temp, parent, settings);
+            _placer.PlaceOnScene(temp, parent, settings);
             DestroyImmediate(temp);
+        }
+
+        internal void UpdatePrefabVisuals(GameObject temp, CreatorSettingsSO settings)
+        {
+            Renderer renderer = temp.GetComponent<Renderer>();
+            if (settings.Material != null)
+            {
+                renderer.sharedMaterial = settings.Material;
+                if (settings.Material.color != settings.Color)
+                {
+                    if (EditorUtility.DisplayDialog(
+                        "Change color of the material",
+                        "Do you want to change color of the material that you selected?",
+                        "Yes",
+                        "No")
+                        )
+                    {
+                        settings.Material.color = settings.Color;
+                    }
+                }
+            }
+        }
+
+        internal void UpdatePrefabScale(GameObject temp, CreatorSettingsSO settings)
+        {
+            Transform transform = temp.GetComponent<Transform>();
+            transform.localScale *= settings.Scale;
         }
     }
 }

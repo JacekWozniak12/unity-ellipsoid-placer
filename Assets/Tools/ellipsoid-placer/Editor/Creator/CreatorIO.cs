@@ -1,19 +1,12 @@
+using UnityEngine;
+using UnityEditor;
+using System;
+
 namespace EllipsePlacer.Editor
 {
-    using UnityEngine;
-    using UnityEditor;
-    using System;
-
-    public partial class CreatorView : EditorWindow
+    public class CreatorIO
     {
-        internal bool Export()
-        {
-            CreatorSettingsSO asset = ScriptableObject.CreateInstance<CreatorSettingsSO>();
-            ApplyPropertiesFromWindowTo(asset);
-            return ExportToFile(asset);
-        }
-
-        internal bool ExportToFile(CreatorSettingsSO asset)
+        public bool ExportToFile(CreatorSettingsSO asset)
         {
             try
             {
@@ -41,7 +34,7 @@ namespace EllipsePlacer.Editor
             }
         }
 
-        internal CreatorSettingsSO Import()
+        public CreatorSettingsSO ImportWithOpenFilePanel()
         {
             try
             {
