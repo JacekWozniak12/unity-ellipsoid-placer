@@ -27,7 +27,7 @@ namespace EllipsePlacer.Editor
             window._placer = new CreatorPlacer();
             window._currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
             window._propertyHandler = new CreatorPropertyHandler(window._currentSettings);
-            dropView.EventHappened.AddListener(window._propertyHandler.SetCreatorSettings);
+            dropView.EventHappened.AddListener(window.ImportProcedure);
 
             window._viewElements.AddRange(
                 new IDisplayGUI[]{
@@ -63,9 +63,14 @@ namespace EllipsePlacer.Editor
         internal void ImportProcedure()
         {
             CreatorSettingsSO temp = _creatorIO.ImportWithOpenFilePanel();
-            if (temp != null)
+            ImportProcedure(temp);
+        }
+
+        internal void ImportProcedure(CreatorSettingsSO so)
+        {
+            if (so != null)
             {
-                _currentSettings = Instantiate(temp);
+                _currentSettings = Instantiate(so);
                 _propertyHandler.SetCreatorSettings(_currentSettings);
             }
         }
@@ -73,9 +78,9 @@ namespace EllipsePlacer.Editor
         internal void ExportProcedure()
         {
             _currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
-            
+
             _propertyHandler.ApplyPropertiesFromWindowTo(_currentSettings);
-            if(_creatorIO.ExportToFile(_currentSettings))
+            if (_creatorIO.ExportToFile(_currentSettings))
             {
                 _propertyHandler.SetCreatorSettings(_currentSettings);
             }
