@@ -118,7 +118,7 @@ namespace EllipsePlacer.Editor
                         "No")
                         )
                     {
-                        settings.Material.color = settings.Color;
+                        renderer.material.color = settings.Color;
                     }
                 }
             }
