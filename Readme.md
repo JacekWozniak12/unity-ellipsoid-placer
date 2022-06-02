@@ -1,6 +1,6 @@
 # Ellipsoid Placer
 
-![Ellipse](Docs\Ellipse_h5_w8.PNG)
+![Ellipse](https://github.com/JacekWozniak12/unity-ellipsoid-placer/blob/master/Docs/Ellipse_h5_w8.PNG)
 ## Features
 - Unity Editor Tool
 - Creates ellipse using multiple methods, like based on constant angle change (prefered for circles), item length or gameobject (position, rotation and size) based. 
