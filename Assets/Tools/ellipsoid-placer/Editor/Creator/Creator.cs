@@ -8,12 +8,9 @@ namespace EllipsePlacer.Editor
     {
         CreatorIO _creatorIO = new CreatorIO();
         List<IDisplayGUI> _viewElements = new List<IDisplayGUI>();
-
-        [SerializeField]
         CreatorSettingsSO _currentSettings = default;
         CreatorPropertyHandler _propertyHandler;
         CreatorPlacer _placer;
-
 
         [MenuItem(Settings.WINDOW_MENU_NAME)]
         static void Init()
@@ -23,50 +20,53 @@ namespace EllipsePlacer.Editor
                 true,
                 Settings.NAME) as CreatorView;
 
-            CreatorDropView dropView = new CreatorDropView();
-            window._placer = new CreatorPlacer();
-            window._currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
-            window._propertyHandler = new CreatorPropertyHandler(window._currentSettings);
-            dropView.EventHappened.AddListener(window.ImportProcedure);
-
-            window._viewElements.AddRange(
-                new IDisplayGUI[]{
-                    window._propertyHandler,
-                    dropView}
-               );
+            Setup(window);
 
             window.minSize = Settings.WINDOW_SIZE;
             window.Show();
         }
 
+        static void Setup(CreatorView window)
+        {
+            CreatorDropView dropView = new CreatorDropView();
+            window._placer = new CreatorPlacer();
+            window._currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
+            window._propertyHandler = new CreatorPropertyHandler(window._currentSettings);
+            dropView.EventHappened.AddListener(window.ImportProcedure);
+            DefineGUIContent(window, dropView);
+        }
+
+        static void DefineGUIContent(CreatorView window, CreatorDropView dropView)
+        {
+            window._viewElements.AddRange(
+                new IDisplayGUI[]{
+                    new CreatorImportButton(window),
+                    dropView,
+                    new CreatorExportButton(window),
+                    window._propertyHandler,
+                    new CreatorGenerateButton(window)
+                    }
+               );
+        }
+
         internal void OnGUI()
         {
-            DisplayImportExport();
-
             foreach (IDisplayGUI displayer in _viewElements)
                 displayer.OnDisplayGUI();
-
-            DisplayCreate();
         }
 
-        internal void DisplayImportExport()
+        public void Place()
         {
-            if (GUILayout.Button("Import changes from file")) ImportProcedure();
-            if (GUILayout.Button("Export changes to new file")) ExportProcedure();
+            Place(_propertyHandler.GetSerializedObject().targetObject as CreatorSettingsSO);
         }
 
-        internal void DisplayCreate()
-        {
-            if (GUILayout.Button("Generate")) Place(_propertyHandler.GetSerializedObject().targetObject as CreatorSettingsSO);
-        }
-
-        internal void ImportProcedure()
+        public void ImportProcedure()
         {
             CreatorSettingsSO temp = _creatorIO.ImportWithOpenFilePanel();
             ImportProcedure(temp);
         }
 
-        internal void ImportProcedure(CreatorSettingsSO so)
+        public void ImportProcedure(CreatorSettingsSO so)
         {
             if (so != null)
             {
@@ -75,7 +75,7 @@ namespace EllipsePlacer.Editor
             }
         }
 
-        internal void ExportProcedure()
+        public void ExportProcedure()
         {
             _currentSettings = ScriptableObject.CreateInstance<CreatorSettingsSO>();
 
